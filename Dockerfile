@@ -25,7 +25,7 @@ RUN apt-get install -y \
 	apt-get update && \
 	apt-get install -y \
 	nginx \
-	supervisor &&\
+	supervisor \
 	language-pack-zh-hans* &&\
 	apt-get update && \
 	ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
