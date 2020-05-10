@@ -26,6 +26,7 @@ RUN apt-get install -y \
 	apt-get install -y \
 	nginx \
 	supervisor &&\
+	language-pack-zh-hans* &&\
 	apt-get update && \
 	ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 	apt-get install -y \
@@ -33,25 +34,36 @@ RUN apt-get install -y \
 	rm -rf /var/lib/apt/lists/*
 # 安装软件
 
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY deploy_conf/nginx-app.conf /etc/nginx/sites-available/default
 COPY deploy_conf/supervisor-app.conf /etc/supervisor/conf.d/
 COPY deploy_conf/pip.conf /root/.pip/pip.conf
 # 复制配置文件
 
-RUN pip3 install https://codeload.github.com/sshwsfc/xadmin/zip/django2
-COPY requirements.txt /django/dmock/
-RUN pip3 install -r /django/dmock/requirements.txt
-# 安装Python依赖库
-
 COPY . /django/dmock/
+# 拷贝代码
+RUN pip3 install https://codeload.github.com/sshwsfc/xadmin/zip/django2 && \
+pip3 install -r /django/dmock/requirements.txt
+# 安装python依赖库
+
 RUN sed -i '35,36d' /usr/local/lib/python3.6/dist-packages/django/db/backends/mysql/base.py && \
 sed -i '145,146d' /usr/local/lib/python3.6/dist-packages/django/db/backends/mysql/operations.py && \
-sed -i '93d' /usr/local/lib/python3.6/dist-packages/django/forms/boundfield.py
-# 复制其余代码并修改Django源码
+sed -i '93d' /usr/local/lib/python3.6/dist-packages/django/forms/boundfield.py && \
+sed -i '38,40c <h4>轻量级mock平台</h4>' /usr/local/lib/python3.6/dist-packages/xadmin/templates/xadmin/views/login.html
+# 修改Django源码
+
+RUN mkdir /django/dmock/media
+# 创建/django/dmock/media目录
+
+ENV LANG zh_CN.UTF-8
+ENV LANGUAGE zh_CN.UTF-8
+ENV LC_ALL zh_CN.UTF-8
+# 设置环境变量，选择zh_CN.UTF-8作为默认字符集，用以支持中文
+
+ENV PYTHONUNBUFFERED=1
+# 设置环境变量，不缓冲，等同于python3 -u
 
 EXPOSE 80
 # 暴露80端口
 
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisor-app.conf"]
+ENTRYPOINT ["supervisord", "-c", "/etc/supervisor/conf.d/supervisor-app.conf"]
 # 启动supervisor并加载配置文件
