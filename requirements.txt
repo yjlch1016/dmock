@@ -1,4 +1,4 @@
-Django==2.2.2
+Django==2.2.13
 PyMySQL==0.9.3
 xlrd==1.2.0
 XlsxWriter==1.1.8
