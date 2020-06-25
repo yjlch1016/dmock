@@ -63,7 +63,7 @@ docker run -d --name mock2019 -p 80:80 mock:latest
 给容器取个别名mock2019  
 映射80端口  
 
-http://0.0.0.0/admin/  
+http://x.x.x.x/admin/  
 宿主机的IP地址  
 账号：admin  
 密码：test123456  
@@ -76,3 +76,6 @@ exit
 
 docker stop mock2019  
 停止容器  
+
+docker rm mock2019  
+删除容器  

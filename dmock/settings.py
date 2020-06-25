@@ -23,6 +23,7 @@ SECRET_KEY = '=36^6z6u3(2-u8*#b_s!euzv)kk7p+hux9*r$_u5ybfy7o1xk3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# 生产环境应该改为False
 
 ALLOWED_HOSTS = ['*']
 
@@ -81,7 +82,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dmock',
-        'HOST': '192.168.1.102',
+        'HOST': '192.168.1.101',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': 'Abcdef@123456',
